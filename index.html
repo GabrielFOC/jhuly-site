@@ -96,22 +96,31 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 320px;
-      height: 100px;
+      height: 110px;
       border-radius: 12px;
       z-index: 999;
       display: none;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     }
 
+    #extraPics {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 998;
+    }
+
     .extra-pic {
       position: absolute;
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 10px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
       opacity: 0;
-      transition: opacity 2s ease;
-      z-index: 0;
+      transition: opacity 1.5s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .extra-pic.show {
@@ -165,11 +174,6 @@
     <div style="position: relative; width: 100%; max-width: 300px; height: 300px;">
       <canvas id="fundo" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 0;"></canvas>
       <canvas id="scratch" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
-
-      <!-- Fotos adicionais com fade -->
-      <img class="extra-pic" src="foto1.jpg" style="top: 10px; left: 10px;">
-      <img class="extra-pic" src="foto2.jpg" style="bottom: 10px; right: 10px;">
-      <img class="extra-pic" src="foto3.jpg" style="top: 10px; right: 10px;">
     </div>
     <p>Use o dedo ou mouse para raspar</p>
     <div id="finalMsg">
@@ -177,6 +181,13 @@
       em cada memória bonita, em tudo que você é. 💗<br>
       Ela tem muito orgulho de você.
     </div>
+  </div>
+
+  <!-- Extra Pictures -->
+  <div id="extraPics">
+    <img class="extra-pic" id="pic1" src="foto1.jpg" style="top: 20px; left: 20px;">
+    <img class="extra-pic" id="pic2" src="foto2.jpg" style="bottom: 20px; right: 20px;">
+    <img class="extra-pic" id="pic3" src="foto3.jpg" style="top: 20px; right: 20px;">
   </div>
 
   <script>
@@ -236,7 +247,6 @@
       };
 
       let isDrawing = false;
-      let imagensApareceram = false;
 
       function draw(e) {
         if (!isDrawing) return;
@@ -259,11 +269,13 @@
             document.getElementById("finalMsg").style.display = "block";
           }
 
-          if (percentage > 80 && !imagensApareceram) {
-            imagensApareceram = true;
-            document.querySelectorAll(".extra-pic").forEach(pic => {
-              pic.classList.add("show");
-            });
+          if (percentage > 80 && !window.extraPicsShown) {
+            window.extraPicsShown = true;
+
+            // Aparece as imagens ao redor
+            document.getElementById("pic1").classList.add("show");
+            document.getElementById("pic2").classList.add("show");
+            document.getElementById("pic3").classList.add("show");
           }
         }, 500);
       }
@@ -288,6 +300,5 @@
       }, { passive: false });
     }
   </script>
-
 </body>
 </html>

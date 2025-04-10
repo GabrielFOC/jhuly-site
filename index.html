@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pra Você 💖</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -20,6 +24,7 @@
     .container {
       text-align: center;
       max-width: 500px;
+      width: 90%;
       padding: 20px;
       background: white;
       border-radius: 20px;
@@ -64,30 +69,20 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      width: 100%;
-      gap: 20px;
       padding: 20px;
     }
 
-    .scratch-container {
-      position: relative;
-      width: 90%;
-      max-width: 320px;
-      aspect-ratio: 1 / 1;
-      margin-bottom: 10px;
-    }
-
     canvas {
-      width: 100%;
-      height: 100%;
       border: 4px dashed #ff4081;
       border-radius: 15px;
-      position: absolute;
-      top: 0;
-      left: 0;
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      touch-action: none;
     }
 
     p {
+      margin-top: 20px;
       font-size: 18px;
       color: #444;
       text-align: center;
@@ -95,21 +90,27 @@
 
     #finalMsg {
       display: none;
-      font-size: 18px;
+      margin-top: 30px;
+      font-size: 20px;
       color: #d63384;
       text-align: center;
       padding: 10px;
-      max-width: 90%;
     }
 
-    @media (max-width: 480px) {
+    .canvas-wrapper {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      max-width: 90vw;
+    }
+
+    @media (max-width: 400px) {
       h1 {
         font-size: 20px;
       }
 
       button {
         font-size: 14px;
-        padding: 8px 16px;
       }
     }
   </style>
@@ -119,7 +120,7 @@
   <!-- Quiz -->
   <div class="container" id="quiz">
     <h1 id="question">Ei, posso te perguntar uma coisa?</h1>
-    <img id="quizImg" src="https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif" alt="gif fofo">
+    <img id="quizImg" src="https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif" alt="gif fofo" />
     <div class="buttons">
       <button onclick="nextQuestion()">Sim</button>
       <button onclick="nextQuestion()">Claro!</button>
@@ -130,15 +131,15 @@
   <div id="raspadinha">
     <h1>Raspe com carinho... 💖</h1>
 
-    <div class="scratch-container">
-      <canvas id="fundo" width="320" height="320"></canvas>
-      <canvas id="scratch" width="320" height="320"></canvas>
+    <div class="canvas-wrapper">
+      <canvas id="fundo" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 0;"></canvas>
+      <canvas id="scratch" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
     </div>
 
     <p>Use o dedo ou mouse para raspar</p>
 
     <div id="finalMsg">
-      Ela sempre vai estar com você, em cada gesto de amor,<br>
+      Ela sempre vai estar com você, em cada gesto de amor,<br />
       em cada memória bonita, em tudo que você é.  
       💗 Ela tem muito orgulho de você.
     </div>
@@ -189,12 +190,12 @@
 
       const img = new Image();
       img.crossOrigin = "anonymous";
-      img.src = "littlejhuly.jpeg"; // Certifique-se que o arquivo está na mesma pasta no GitHub
+      img.src = "littlejhuly.jpeg";
 
       img.onload = () => {
         fundoCtx.drawImage(img, 0, 0, fundo.width, fundo.height);
 
-        ctx.fillStyle = "#ffc0cb"; // cor da tinta
+        ctx.fillStyle = "#ffc0cb";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.globalCompositeOperation = "destination-out";
       };
@@ -203,6 +204,8 @@
 
       function draw(e) {
         if (!isDrawing) return;
+        e.preventDefault();
+
         const rect = canvas.getBoundingClientRect();
         const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
         const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
@@ -223,13 +226,23 @@
         }, 500);
       }
 
+      // Mouse
       canvas.addEventListener("mousedown", () => isDrawing = true);
       canvas.addEventListener("mouseup", () => isDrawing = false);
       canvas.addEventListener("mousemove", draw);
 
-      canvas.addEventListener("touchstart", () => isDrawing = true);
-      canvas.addEventListener("touchend", () => isDrawing = false);
-      canvas.addEventListener("touchmove", draw);
+      // Touch
+      canvas.addEventListener("touchstart", (e) => {
+        isDrawing = true;
+        document.body.style.overflow = "hidden";
+      }, { passive: false });
+
+      canvas.addEventListener("touchend", () => {
+        isDrawing = false;
+        document.body.style.overflow = "";
+      });
+
+      canvas.addEventListener("touchmove", draw, { passive: false });
     }
   </script>
 

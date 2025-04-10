@@ -99,12 +99,10 @@
   <!-- Raspadinha -->
   <div id="raspadinha">
     <h1>Raspe com carinho... 💖</h1>
-
     <div style="position: relative; width: 300px; height: 300px;">
       <canvas id="fundo" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 0;"></canvas>
       <canvas id="scratch" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
     </div>
-
     <p>Use o dedo ou mouse para raspar</p>
     <div id="finalMsg">
       Ela sempre vai estar com você, em cada gesto de amor,<br>
@@ -158,11 +156,12 @@
 
       const img = new Image();
       img.crossOrigin = "anonymous";
-      img.src = "littlejhuly.jpeg"; // Link corrigido do Google Drive
+      // Se a imagem "littlejhuly.jpeg" estiver na mesma pasta que este arquivo,
+      // basta referenciá-la assim:
+      img.src = "littlejhuly.jpeg"; 
 
       img.onload = () => {
         fundoCtx.drawImage(img, 0, 0, fundo.width, fundo.height);
-
         ctx.fillStyle = "#ffc0cb"; // tinta rosa pra raspar
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.globalCompositeOperation = "destination-out";
@@ -195,7 +194,6 @@
       canvas.addEventListener("mousedown", () => isDrawing = true);
       canvas.addEventListener("mouseup", () => isDrawing = false);
       canvas.addEventListener("mousemove", draw);
-
       canvas.addEventListener("touchstart", () => isDrawing = true);
       canvas.addEventListener("touchend", () => isDrawing = false);
       canvas.addEventListener("touchmove", draw);

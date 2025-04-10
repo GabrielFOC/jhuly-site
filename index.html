@@ -15,18 +15,19 @@
       background: #ffe6f0;
       font-family: 'Comic Sans MS', cursive;
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      overflow: hidden;
-      height: 100vh;
-      width: 100vw;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding-top: 150px;
+      padding-bottom: 50px;
     }
 
     .container {
       text-align: center;
-      max-width: 90%;
-      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+      padding: 1rem;
       background: white;
       border-radius: 20px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
@@ -38,7 +39,8 @@
     }
 
     img {
-      max-width: 100%;
+      width: 100%;
+      max-width: 300px;
       border-radius: 15px;
       margin: 20px 0;
     }
@@ -46,9 +48,8 @@
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
       flex-wrap: wrap;
+      gap: 15px;
     }
 
     button {
@@ -56,9 +57,9 @@
       font-size: 16px;
       border: none;
       border-radius: 10px;
-      cursor: pointer;
       background-color: #ff4081;
       color: white;
+      cursor: pointer;
       transition: 0.3s;
     }
 
@@ -70,7 +71,8 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 1rem;
+      text-align: center;
     }
 
     canvas {
@@ -79,40 +81,46 @@
       touch-action: none;
     }
 
-    p {
-      margin-top: 15px;
-      font-size: 16px;
-      color: #444;
-    }
-
     #finalMsg {
       display: none;
-      margin-top: 20px;
-      font-size: 18px;
+      margin-top: 1rem;
+      font-size: 16px;
       color: #d63384;
       text-align: center;
     }
 
     iframe.spotify {
       position: fixed;
-      top: 0;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 90%;
-      height: 60px;
+      width: 100%;
+      max-width: 320px;
+      height: 100px;
       border-radius: 12px;
       z-index: 999;
       display: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     }
 
-    #spacer {
-      height: 70px;
-      width: 100%;
+    .extra-pic {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 2s ease;
+      z-index: 0;
+    }
+
+    .extra-pic.show {
+      opacity: 1;
     }
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 20px;
+        font-size: 18px;
       }
 
       button {
@@ -121,27 +129,25 @@
       }
 
       canvas {
-        width: 260px !important;
-        height: 260px !important;
+        width: 250px !important;
+        height: 250px !important;
       }
 
       #finalMsg {
-        font-size: 16px;
+        font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Player fixo no topo -->
+  <!-- Spotify Player -->
   <iframe id="spotifyPlayer" class="spotify"
-    src="https://open.spotify.com/embed/track/4LhxdvP3lfgH3ciOyO1BX1?utm_source=generator&theme=0"
+    src="https://open.spotify.com/embed/track/1yctSMp7P3SkSCHsnkUI7b?utm_source=generator"
     frameborder="0"
     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
     loading="lazy">
   </iframe>
-
-  <div id="spacer"></div> <!-- espaço para o player não cobrir o conteúdo -->
 
   <!-- Quiz -->
   <div class="container" id="quiz">
@@ -156,9 +162,14 @@
   <!-- Raspadinha -->
   <div id="raspadinha">
     <h1>Raspe com carinho... 💖</h1>
-    <div style="position: relative; width: 300px; height: 300px;">
+    <div style="position: relative; width: 100%; max-width: 300px; height: 300px;">
       <canvas id="fundo" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 0;"></canvas>
       <canvas id="scratch" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
+
+      <!-- Fotos adicionais com fade -->
+      <img class="extra-pic" src="foto1.jpg" style="top: 10px; left: 10px;">
+      <img class="extra-pic" src="foto2.jpg" style="bottom: 10px; right: 10px;">
+      <img class="extra-pic" src="foto3.jpg" style="top: 10px; right: 10px;">
     </div>
     <p>Use o dedo ou mouse para raspar</p>
     <div id="finalMsg">
@@ -225,6 +236,7 @@
       };
 
       let isDrawing = false;
+      let imagensApareceram = false;
 
       function draw(e) {
         if (!isDrawing) return;
@@ -242,8 +254,16 @@
             if (pixels[i] < 128) transparentPixels++;
           }
           const percentage = transparentPixels / (canvas.width * canvas.height) * 100;
+
           if (percentage > 60) {
             document.getElementById("finalMsg").style.display = "block";
+          }
+
+          if (percentage > 80 && !imagensApareceram) {
+            imagensApareceram = true;
+            document.querySelectorAll(".extra-pic").forEach(pic => {
+              pic.classList.add("show");
+            });
           }
         }, 500);
       }

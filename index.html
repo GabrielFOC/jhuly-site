@@ -1,302 +1,298 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pra Você 💖</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pra Você 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #ffe6f0;
-      font-family: 'Comic Sans MS', cursive;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      padding-top: 150px;
-      padding-bottom: 50px;
-    }
+        body {
+            background: #ffe6f0;
+            font-family: 'Comic Sans MS', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding-top: 150px;
+            padding-bottom: 50px;
+        }
 
-    .container {
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-      padding: 1rem;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
 
-    h1 {
-      font-size: 22px;
-      color: #ff4081;
-    }
+        h1 {
+            font-size: 22px;
+            color: #ff4081;
+        }
 
-    img {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 15px;
-      margin: 20px 0;
-    }
+        img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      background-color: #ff4081;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff4081;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    button:hover {
-      background-color: #e73370;
-    }
+        button:hover {
+            background-color: #e73370;
+        }
 
-    #raspadinha {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-      text-align: center;
-    }
+        #raspadinha {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            text-align: center;
+        }
 
-    canvas {
-      border: 4px dashed #ff4081;
-      border-radius: 15px;
-      touch-action: none;
-    }
+        canvas {
+            border: 4px dashed #ff4081;
+            border-radius: 15px;
+            touch-action: none;
+        }
 
-    #finalMsg {
-      display: none;
-      margin-top: 1rem;
-      font-size: 16px;
-      color: #d63384;
-      text-align: center;
-    }
+        #finalMsg {
+            display: none;
+            margin-top: 1rem;
+            font-size: 16px;
+            color: #d63384;
+            text-align: center;
+        }
 
-    iframe.spotify {
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 320px;
-      height: 110px;
-      border-radius: 12px;
-      z-index: 999;
-      display: none;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    }
+        iframe.spotify {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 320px;
+            height: 110px;
+            border-radius: 12px;
+            z-index: 999;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
 
-    #extraPics {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 998;
-    }
+        #extraPics {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 998;
+        }
 
-    .extra-pic {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+        .extra-pic {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
 
-    .extra-pic.show {
-      opacity: 1;
-    }
+        .extra-pic.show {
+            opacity: 1;
+        }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 18px;
-      }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 18px;
+            }
 
-      button {
-        font-size: 14px;
-        padding: 8px 16px;
-      }
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
 
-      canvas {
-        width: 250px !important;
-        height: 250px !important;
-      }
+            canvas {
+                width: 250px !important;
+                height: 250px !important;
+            }
 
-      #finalMsg {
-        font-size: 14px;
-      }
-    }
-  </style>
+            #finalMsg {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Spotify Player -->
-  <iframe id="spotifyPlayer" class="spotify"
-    src="https://open.spotify.com/embed/track/1yctSMp7P3SkSCHsnkUI7b?utm_source=generator"
-    frameborder="0"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy">
-  </iframe>
+    <iframe id="spotifyPlayer" class="spotify"
+        src="https://open.spotify.com/embed/track/1yctSMp7P3SkSCHsnkUI7b?utm_source=generator"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+    </iframe>
 
-  <!-- Quiz -->
-  <div class="container" id="quiz">
-    <h1 id="question">Ei, posso te perguntar uma coisa?</h1>
-    <img id="quizImg" src="pergunta.jpeg" alt="gif fofo">
-    <div class="buttons">
-      <button onclick="nextQuestion()">Sim</button>
-      <button onclick="nextQuestion()">Claro!</button>
+    <div class="container" id="quiz">
+        <h1 id="question">Ei, posso te perguntar uma coisa?</h1>
+        <img id="quizImg" src="pergunta.jpeg" alt="gif fofo">
+        <div class="buttons">
+            <button onclick="nextQuestion()">Sim</button>
+            <button onclick="nextQuestion()">Claro!</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Raspadinha -->
-  <div id="raspadinha">
-    <h1>Raspe com carinho... 💖</h1>
-    <div style="position: relative; width: 100%; max-width: 300px; height: 300px;">
-      <canvas id="fundo" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 0;"></canvas>
-      <canvas id="scratch" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
+    <div id="raspadinha">
+        <h1>Raspe com carinho... 💖</h1>
+        <div style="position: relative; width: 100%; max-width: 300px; height: 300px;">
+            <canvas id="fundo" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 0;"></canvas>
+            <canvas id="scratch" width="300" height="300" style="position: absolute; top: 0; left: 0; z-index: 1;"></canvas>
+        </div>
+        <p>Use o dedo ou mouse para raspar</p>
+        <div id="finalMsg">
+            Ela sempre vai estar com você, em cada gesto de amor,<br>
+            em cada memória bonita, em tudo que você é. 💗<br>
+            Ela tem muito orgulho de você.
+        </div>
     </div>
-    <p>Use o dedo ou mouse para raspar</p>
-    <div id="finalMsg">
-      Ela sempre vai estar com você, em cada gesto de amor,<br>
-      em cada memória bonita, em tudo que você é. 💗<br>
-      Ela tem muito orgulho de você.
+
+    <div id="extraPics">
+        <img class="extra-pic" id="pic1" src="foto1.jpeg" style="bottom: 20px; left: 20px;">
+        <img class="extra-pic" id="pic2" src="foto2.jpeg" style="bottom: 20px; right: 20px;">
     </div>
-  </div>
 
-  <!-- Extra Pictures -->
-  <div id="extraPics">
-    <img class="extra-pic" id="pic1" src="foto1.jpeg" style="bottom: 20px; left: 20px;">
-    <img class="extra-pic" id="pic2" src="foto2.jpeg" style="bottom: 20px; right: 20px;">
-  </div>
+    <script>
+        const questions = [
+            {
+                text: "Ei, posso te perguntar uma coisa?",
+                img: "pergunta.jpeg"
+            },
+            {
+                text: "Você sabe o quanto é forte e especial?",
+                img: "forte.jpeg"
+            },
+            {
+                text: "Você sabia que ela sempre vai estar com você?",
+                img: "filha.jpeg"
+            },
+            {
+                text: "Então... tenho uma coisa pra te mostrar 💖",
+                img: "https://media.giphy.com/media/kUTME7ABmhYg5J3psM/giphy.gif"
+            }
+        ];
 
-  <script>
-    const questions = [
-      {
-        text: "Ei, posso te perguntar uma coisa?",
-        img: "pergunta.jpeg"
-      },
-      {
-        text: "Você sabe o quanto é forte e especial?",
-        img: "forte.jpeg"
-      },
-      {
-        text: "Você sabia que ela sempre vai estar com você?",
-        img: "filha.jpeg"
-      },
-      {
-        text: "Então... tenho uma coisa pra te mostrar 💖",
-        img: "https://media.giphy.com/media/kUTME7ABmhYg5J3psM/giphy.gif"
-      }
-    ];
+        let current = 0;
 
-    let current = 0;
+        function nextQuestion() {
+            current++;
+            const quiz = document.getElementById("quiz");
+            const raspadinha = document.getElementById("raspadinha");
+            const player = document.getElementById("spotifyPlayer");
 
-    function nextQuestion() {
-      current++;
-      const quiz = document.getElementById("quiz");
-      const raspadinha = document.getElementById("raspadinha");
-      const player = document.getElementById("spotifyPlayer");
+            if (current < questions.length) {
+                document.getElementById("question").innerText = questions[current].text;
+                document.getElementById("quizImg").src = questions[current].img;
+            } else {
+                quiz.style.display = "none";
+                raspadinha.style.display = "flex";
+                player.style.display = "block";
+                startScratch();
+            }
+        }
 
-      if (current < questions.length) {
-        document.getElementById("question").innerText = questions[current].text;
-        document.getElementById("quizImg").src = questions[current].img;
-      } else {
-        quiz.style.display = "none";
-        raspadinha.style.display = "flex";
-        player.style.display = "block";
-        startScratch();
-      }
-    }
+        function startScratch() {
+            const fundo = document.getElementById("fundo");
+            const fundoCtx = fundo.getContext("2d");
+            const canvas = document.getElementById("scratch");
+            const ctx = canvas.getContext("2d");
 
-    function startScratch() {
-      const fundo = document.getElementById("fundo");
-      const fundoCtx = fundo.getContext("2d");
-      const canvas = document.getElementById("scratch");
-      const ctx = canvas.getContext("2d");
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = "littlejhuly.jpeg";
 
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.src = "littlejhuly.jpeg";
+            img.onload = () => {
+                fundoCtx.drawImage(img, 0, 0, fundo.width, fundo.height);
+                ctx.fillStyle = "#ffc0cb";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.globalCompositeOperation = "destination-out";
+            };
 
-      img.onload = () => {
-        fundoCtx.drawImage(img, 0, 0, fundo.width, fundo.height);
-        ctx.fillStyle = "#ffc0cb";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalCompositeOperation = "destination-out";
-      };
+            let isDrawing = false;
 
-      let isDrawing = false;
+            function draw(e) {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                ctx.beginPath();
+                ctx.arc(x, y, 20, 0, Math.PI * 2);
+                ctx.fill();
 
-      function draw(e) {
-        if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-        const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-        ctx.beginPath();
-        ctx.arc(x, y, 20, 0, Math.PI * 2);
-        ctx.fill();
+                setTimeout(() => {
+                    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                    let transparentPixels = 0;
+                    for (let i = 3; i < pixels.length; i += 4) {
+                        if (pixels[i] < 128) transparentPixels++;
+                    }
+                    const percentage = transparentPixels / (canvas.width * canvas.height) * 100;
 
-        setTimeout(() => {
-          const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-          let transparentPixels = 0;
-          for (let i = 3; i < pixels.length; i += 4) {
-            if (pixels[i] < 128) transparentPixels++;
-          }
-          const percentage = transparentPixels / (canvas.width * canvas.height) * 100;
+                    if (percentage > 60) {
+                        document.getElementById("finalMsg").style.display = "block";
+                    }
 
-          if (percentage > 60) {
-            document.getElementById("finalMsg").style.display = "block";
-          }
+                    if (percentage > 80 && !window.extraPicsShown) {
+                        window.extraPicsShown = true;
 
-          if (percentage > 80 && !window.extraPicsShown) {
-            window.extraPicsShown = true;
+                        // Aparece as imagens ao redor
+                        document.getElementById("pic1").classList.add("show");
+                        document.getElementById("pic2").classList.add("show");
+                    }
+                }, 500);
+            }
 
-            // Aparece as imagens ao redor
-            document.getElementById("pic1").classList.add("show");
-            document.getElementById("pic2").classList.add("show");
-          }
-        }, 500);
-      }
+            canvas.addEventListener("mousedown", () => isDrawing = true);
+            canvas.addEventListener("mouseup", () => isDrawing = false);
+            canvas.addEventListener("mousemove", draw);
 
-      canvas.addEventListener("mousedown", () => isDrawing = true);
-      canvas.addEventListener("mouseup", () => isDrawing = false);
-      canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("touchstart", (e) => {
+                isDrawing = true;
+                e.preventDefault();
+            }, { passive: false });
 
-      canvas.addEventListener("touchstart", (e) => {
-        isDrawing = true;
-        e.preventDefault();
-      }, { passive: false });
+            canvas.addEventListener("touchend", (e) => {
+                isDrawing = false;
+                e.preventDefault();
+            }, { passive: false });
 
-      canvas.addEventListener("touchend", (e) => {
-        isDrawing = false;
-        e.preventDefault();
-      }, { passive: false });
-
-      canvas.addEventListener("touchmove", (e) => {
-        draw(e);
-        e.preventDefault();
-      }, { passive: false });
-    }
-  </script>
+            canvas.addEventListener("touchmove", (e) => {
+                draw(e);
+                e.preventDefault();
+            }, { passive: false });
+        }
+    </script>
 </body>
 </html>
